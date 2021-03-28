@@ -7,10 +7,18 @@ use Mix.Config
 # Run `mix help test` for more information.
 config :todo, Todo.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "changeme",
   database: "todo_test#{System.get_env("MIX_TEST_PARTITION")}",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :todo, Todo.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "changeme",
+  database: "eventstore_dev#{System.get_env("MIX_TEST_PARTITION")}",
+  hostname: "localhost",
+  pool_size: 1
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.

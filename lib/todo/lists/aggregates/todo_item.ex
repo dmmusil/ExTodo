@@ -31,7 +31,7 @@ defmodule Todo.Lists.Aggregates.TodoItem do
     }
   end
 
-  def apply({%TodoItem{} = item, %TodoItemAdded{} = added}) do
+  def apply(%TodoItem{} = item, %TodoItemAdded{} = added) do
     %TodoItem{
       item
       | uuid: added.item_uuid,
