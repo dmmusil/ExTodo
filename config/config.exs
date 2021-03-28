@@ -11,17 +11,16 @@ config :todo,
   ecto_repos: [Todo.Repo],
   event_stores: [Todo.EventStore]
 
-config :todo, Todo.App,
-  event_store: [
-    adapter: Commanded.EventStore.Adapters.EventStore,
-    event_store: Todo.EventStore
-  ]
-
 # Configures the endpoint
 config :todo, TodoWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "MI3463dSKiVUjmwjbiyCM11rRdqOKzpV4p9EqCOCLM4Qmp/Q+jN/97v735PUylGe",
-  render_errors: [view: TodoWeb.ErrorView, accepts: ~w(html json), layout: false],
+  secret_key_base:
+    "MI3463dSKiVUjmwjbiyCM11rRdqOKzpV4p9EqCOCLM4Qmp/Q+jN/97v735PUylGe",
+  render_errors: [
+    view: TodoWeb.ErrorView,
+    accepts: ~w(html json),
+    layout: false
+  ],
   pubsub_server: Todo.PubSub,
   live_view: [signing_salt: "k+Tin04C"]
 
@@ -29,6 +28,12 @@ config :todo, TodoWeb.Endpoint,
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
+
+config :commanded,
+  event_store_adapter: Commanded.EventStore.Adapters.EventStore
+
+config :commanded_ecto_projections,
+  repo: Todo.Repo
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason

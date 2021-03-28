@@ -16,9 +16,8 @@ defmodule Todo.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Todo.PubSub},
       # Start the Endpoint (http/https)
-      TodoWeb.Endpoint
-      # Start a worker by calling: Todo.Worker.start_link(arg)
-      # {Todo.Worker, arg}
+      TodoWeb.Endpoint,
+      Todo.Lists.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
