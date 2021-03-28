@@ -8,7 +8,14 @@
 use Mix.Config
 
 config :todo,
-  ecto_repos: [Todo.Repo]
+  ecto_repos: [Todo.Repo],
+  event_stores: [Todo.EventStore]
+
+config :todo, Todo.App,
+  event_store: [
+    adapter: Commanded.EventStore.Adapters.EventStore,
+    event_store: Todo.EventStore
+  ]
 
 # Configures the endpoint
 config :todo, TodoWeb.Endpoint,

@@ -3,10 +3,18 @@ use Mix.Config
 # Configure your database
 config :todo, Todo.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "changeme",
   database: "todo_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
+  pool_size: 10
+
+config :todo, Todo.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "changeme",
+  database: "eventstore_dev",
+  hostname: "localhost",
   pool_size: 10
 
 # For development, we disable any cache and enable
