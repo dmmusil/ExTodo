@@ -10,13 +10,13 @@ config :todo, Todo.Repo,
   password: "changeme",
   database: "todo_test#{System.get_env("MIX_TEST_PARTITION")}",
   hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool_size: 1
 
 config :todo, Todo.EventStore,
   serializer: Commanded.Serialization.JsonSerializer,
   username: "postgres",
   password: "changeme",
-  database: "eventstore_dev#{System.get_env("MIX_TEST_PARTITION")}",
+  database: "eventstore_test",
   hostname: "localhost",
   pool_size: 1
 
@@ -27,4 +27,4 @@ config :todo, TodoWeb.Endpoint,
   server: false
 
 # Print only warnings and errors during test
-config :logger, level: :warn
+# config :logger, level: :info

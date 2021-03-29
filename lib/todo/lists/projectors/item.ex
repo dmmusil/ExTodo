@@ -2,7 +2,7 @@ defmodule Todo.Lists.Projectors.Item do
   use Commanded.Projections.Ecto,
     application: Todo.App,
     name: "Lists.Projectors.Items",
-    consistencty: :strong
+    consistency: :strong
 
   alias Todo.Lists.Events.{
     TodoItemAdded
@@ -11,8 +11,10 @@ defmodule Todo.Lists.Projectors.Item do
   alias Todo.Lists.Projections.Item
 
   project(%TodoItemAdded{} = added, fn multi ->
+    IO.puts("inserting")
+
     Ecto.Multi.insert(multi, :item, %Item{
-      uuid: added.item_uuid,
+      item_uuid: added.item_uuid,
       completed: false,
       list_uuid: added.list_uuid,
       task: added.task

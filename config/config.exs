@@ -11,6 +11,14 @@ config :todo,
   ecto_repos: [Todo.Repo],
   event_stores: [Todo.EventStore]
 
+config :todo, Todo.App,
+  event_store: [
+    adapter: Commanded.EventStore.Adapters.EventStore,
+    event_store: Todo.EventStore
+  ],
+  pub_sub: :local,
+  registry: :local
+
 # Configures the endpoint
 config :todo, TodoWeb.Endpoint,
   url: [host: "localhost"],

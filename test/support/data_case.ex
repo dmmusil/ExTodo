@@ -27,13 +27,8 @@ defmodule Todo.DataCase do
     end
   end
 
-  setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Todo.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Todo.Repo, {:shared, self()})
-    end
-
+  setup do
+    Todo.Storage.reset!()
     :ok
   end
 
