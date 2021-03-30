@@ -1,6 +1,7 @@
 defmodule Todo.Lists do
   alias Todo.Lists.Commands.{
-    AddTodoItem
+    AddTodoItem,
+    EditTodoItem
   }
 
   alias Todo.App
@@ -17,6 +18,20 @@ defmodule Todo.Lists do
       |> AddTodoItem.assign_list_uuid()
 
     with :ok <- App.dispatch(add_todo_item, consistency: :strong) do
+      get(Item, uuid)
+    end
+  end
+
+  def edit_todo_item(attrs \\ %{}) do
+    %{item_uuid: uuid} = attrs
+
+    edit_todo_item =
+      attrs
+      |> EditTodoItem.new()
+      |> EditTodoItem.assign_uuid()
+      |> EditTodoItem.assign_task()
+
+    with :ok <- App.dispatch(edit_todo_item, consistency: :strong) do
       get(Item, uuid)
     end
   end
