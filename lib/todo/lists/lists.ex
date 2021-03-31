@@ -1,7 +1,8 @@
 defmodule Todo.Lists do
   alias Todo.Lists.Commands.{
     AddTodoItem,
-    EditTodoItem
+    EditTodoItem,
+    CompleteTodoItem
   }
 
   alias Todo.App
@@ -10,14 +11,12 @@ defmodule Todo.Lists do
   def add_todo_item(attrs \\ %{}) do
     uuid = UUID.uuid4()
 
-    add_todo_item =
+    add =
       attrs
       |> AddTodoItem.new()
       |> AddTodoItem.assign_uuid(uuid)
-      |> AddTodoItem.assign_task()
-      |> AddTodoItem.assign_list_uuid()
 
-    with :ok <- App.dispatch(add_todo_item, consistency: :strong) do
+    with :ok <- App.dispatch(add, consistency: :strong) do
       get(Item, uuid)
     end
   end
@@ -25,13 +24,19 @@ defmodule Todo.Lists do
   def edit_todo_item(attrs \\ %{}) do
     %{item_uuid: uuid} = attrs
 
-    edit_todo_item =
-      attrs
-      |> EditTodoItem.new()
-      |> EditTodoItem.assign_uuid()
-      |> EditTodoItem.assign_task()
+    edit = EditTodoItem.new(attrs)
 
-    with :ok <- App.dispatch(edit_todo_item, consistency: :strong) do
+    with :ok <- App.dispatch(edit, consistency: :strong) do
+      get(Item, uuid)
+    end
+  end
+
+  def complete_todo_item(attrs \\ %{}) do
+    %{item_uuid: uuid} = attrs
+
+    complete = CompleteTodoItem.new(attrs)
+
+    with :ok <- App.dispatch(complete, consistency: :strong) do
       get(Item, uuid)
     end
   end
