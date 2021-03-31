@@ -6,7 +6,8 @@ defmodule Todo.Lists.Projectors.Item do
 
   alias Todo.Lists.Events.{
     TodoItemAdded,
-    TodoItemEdited
+    TodoItemEdited,
+    TodoItemCompleted
   }
 
   alias Todo.Lists.Projections.Item
@@ -22,6 +23,10 @@ defmodule Todo.Lists.Projectors.Item do
 
   project(%TodoItemEdited{} = edited, fn multi ->
     update_item(multi, edited.item_uuid, task: edited.new_task)
+  end)
+
+  project(%TodoItemCompleted{} = completed, fn multi ->
+    update_item(multi, completed.item_uuid, completed: true)
   end)
 
   defp update_item(multi, item_uuid, changes) do

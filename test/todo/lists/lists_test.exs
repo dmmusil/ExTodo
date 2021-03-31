@@ -38,4 +38,23 @@ defmodule Todo.ListsTest do
       assert item.task == "Editing works"
     end
   end
+
+  describe "completing a todo item" do
+    test "succeeds when item is not complete" do
+      list_uuid = UUID.uuid4()
+
+      assert {:ok, %Item{} = item} =
+               Lists.add_todo_item(%{list_uuid: list_uuid, task: "It works!"})
+
+      assert item.list_uuid == list_uuid
+      assert item.task == "It works!"
+
+      assert {:ok, %Item{} = item} =
+               Lists.complete_todo_item(%{
+                 item_uuid: item.item_uuid
+               })
+
+      assert item.completed == true
+    end
+  end
 end

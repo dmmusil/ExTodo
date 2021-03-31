@@ -9,7 +9,7 @@ defmodule Todo.Lists.Aggregates.TodoItem do
 
   alias Todo.Lists.Commands.{
     AddTodoItem,
-    # CompleteTodoItem,
+    CompleteTodoItem,
     # UncompleteTodoItem,
     EditTodoItem
     # DeleteTodoItem
@@ -17,7 +17,7 @@ defmodule Todo.Lists.Aggregates.TodoItem do
 
   alias Todo.Lists.Events.{
     TodoItemAdded,
-    # TodoItemCompleted,
+    TodoItemCompleted,
     # TodoItemUncompleted,
     TodoItemEdited
     # TodoItemDeleted
@@ -38,6 +38,16 @@ defmodule Todo.Lists.Aggregates.TodoItem do
     }
   end
 
+  def execute(%TodoItem{completed?: true}, %EditTodoItem{}), do: nil
+
+  def execute(%TodoItem{completed?: false}, %CompleteTodoItem{} = complete) do
+    %TodoItemCompleted{
+      item_uuid: complete.item_uuid
+    }
+  end
+
+  def execute(%TodoItem{completed?: true}, %CompleteTodoItem{}), do: nil
+
   def apply(%TodoItem{} = item, %TodoItemAdded{} = added) do
     %TodoItem{
       item
@@ -47,10 +57,17 @@ defmodule Todo.Lists.Aggregates.TodoItem do
     }
   end
 
-  def apply(%TodoItem{} = item, %TodoItemEdited{} = edited) do
+  def apply(%TodoItem{} = item, %TodoItemEdited{new_task: new_task}) do
     %TodoItem{
       item
-      | task: edited.new_task
+      | task: new_task
+    }
+  end
+
+  def apply(%TodoItem{} = item, %TodoItemCompleted{}) do
+    %TodoItem{
+      item
+      | completed?: true
     }
   end
 end

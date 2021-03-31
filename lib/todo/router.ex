@@ -5,7 +5,8 @@ defmodule Todo.Router do
 
   alias Todo.Lists.Commands.{
     AddTodoItem,
-    EditTodoItem
+    EditTodoItem,
+    CompleteTodoItem
   }
 
   identify(TodoItem, by: :item_uuid, prefix: "item-")
@@ -13,7 +14,8 @@ defmodule Todo.Router do
   dispatch(
     [
       AddTodoItem,
-      EditTodoItem
+      EditTodoItem,
+      CompleteTodoItem
     ],
     to: TodoItem
   )
